@@ -1,0 +1,62 @@
+{
+  "test_cases": [
+    {
+      "name": "Formula 8 Validation - Stage 1",
+      "description": "Test reservation price in abundant inventory stage",
+      "params": {
+        "Q": 500,
+        "m": 50,
+        "M": 150,
+        "n": 10
+      },
+      "expected": {
+        "threshold": 213.0,
+        "phi_at_100": 50.0,
+        "stage_at_100": 1
+      }
+    },
+    {
+      "name": "Formula 8 Validation - Stage 2",
+      "description": "Test reservation price in scarce inventory stage",
+      "params": {
+        "Q": 500,
+        "m": 50,
+        "M": 150,
+        "n": 10
+      },
+      "expected": {
+        "threshold": 213.0,
+        "phi_at_300": "> 50.0",
+        "stage_at_300": 2
+      }
+    },
+    {
+      "name": "Formula 11 - SELL Decision",
+      "description": "Test decision rule when price > reservation",
+      "params": {
+        "Q": 500,
+        "m": 50,
+        "M": 150
+      },
+      "scenario": {
+        "cumulative_retrieval": 300,
+        "current_price": 140,
+        "expected_decision": "SELL"
+      }
+    },
+    {
+      "name": "Formula 11 - HOLD Decision",
+      "description": "Test decision rule when price <= reservation",
+      "params": {
+        "Q": 500,
+        "m": 50,
+        "M": 150
+      },
+      "scenario": {
+        "cumulative_retrieval": 300,
+        "current_price": 60,
+        "expected_decision": "HOLD"
+      }
+    }
+  ]
+}

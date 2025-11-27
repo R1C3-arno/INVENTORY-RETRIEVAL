@@ -1,0 +1,27 @@
+{
+  "simulation": {
+    "Q": 500,
+    "m": 50.0,
+    "M": 150.0,
+    "n": 20,
+    "a": 100.0,
+    "b": 0.5,
+    "delta": 0.2,
+    "h": 2.0,
+    "num_scenarios": 100
+  },
+  "output": {
+    "directory": "output",
+    "dpi": 150,
+    "format": "png"
+  },
+  "algorithms": [
+    "ALG-IR",
+    "ALG-IR-H",
+    "Myopic",
+    "Offline",
+    "Constant-Rate",
+    "Fixed-Threshold",
+    "Random"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "stores": [
+    {
+      "id": 1,
+      "name": "Kho Trung tâm TP.HCM",
+      "code": "WH-HCM-001",
+      "latitude": 10.8231,
+      "longitude": 106.6297,
+      "address": "268 Lý Thường Kiệt, P.14, Q.10",
+      "city": "Ho Chi Minh",
+      "region": "South",
+      "max_capacity": 5000,
+      "current_inventory": 3200,
+      "store_type": "warehouse"
+    },
+    {
+      "id": 2,
+      "name": "Cửa hàng Quận 1",
+      "code": "RT-HCM-Q1",
+      "latitude": 10.7769,
+      "longitude": 106.7009,
+      "address": "120 Nguyễn Huệ, Q.1",
+      "city": "Ho Chi Minh",
+      "region": "South",
+      "max_capacity": 1000,
+      "current_inventory": 650,
+      "store_type": "retail"
+    },
+    {
+      "id": 3,
+      "name": "Kho Hà Nội",
+      "code": "WH-HN-001",
+      "latitude": 21.0285,
+      "longitude": 105.8542,
+      "address": "458 Minh Khai, Hai Bà Trưng",
+      "city": "Hanoi",
+      "region": "North",
+      "max_capacity": 4000,
+      "current_inventory": 2800,
+      "store_type": "warehouse"
+    },
+    {
+      "id": 4,
+      "name": "Cửa hàng Hoàn Kiếm",
+      "code": "RT-HN-HK",
+      "latitude": 21.0245,
+      "longitude": 105.8412,
+      "address": "52 Tràng Tiền, Hoàn Kiếm",
+      "city": "Hanoi",
+      "region": "North",
+      "max_capacity": 600,
+      "current_inventory": 420,
+      "store_type": "retail"
+    },
+    {
+      "id": 5,
+      "name": "Kho Đà Nẵng",
+      "code": "WH-DN-001",
+      "latitude": 16.0544,
+      "longitude": 108.2022,
+      "address": "123 Nguyễn Văn Linh, Hải Châu",
+      "city": "Da Nang",
+      "region": "Central",
+      "max_capacity": 3000,
+      "current_inventory": 1900,
+      "store_type": "warehouse"
+    }
+  ]
+}

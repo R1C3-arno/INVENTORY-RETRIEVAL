@@ -1,0 +1,53 @@
+{
+  "scenarios": [
+    {
+      "name": "iPhone 16 - High Volatility",
+      "description": "Smartphone market with high price fluctuation",
+      "params": {
+        "Q": 1000,
+        "m": 800.0,
+        "M": 1200.0,
+        "n": 12,
+        "a": 500.0,
+        "b": 0.4,
+        "delta": 0.3,
+        "h": 5.0
+      }
+    },
+    {
+      "name": "Seasonal Product - Constrained",
+      "description": "Limited inventory, moderate price range",
+      "params": {
+        "Q": 300,
+        "m": 50.0,
+        "M": 150.0,
+        "n": 20,
+        "a": 100.0,
+        "b": 0.5,
+        "delta": 0.2,
+        "h": 2.0
+      }
+    },
+    {
+      "name": "Commodity - Stable",
+      "description": "Low volatility, high volume",
+      "params": {
+        "Q": 5000,
+        "m": 20.0,
+        "M": 30.0,
+        "n": 50,
+        "a": 1000.0,
+        "b": 10.0,
+        "delta": 0.1,
+        "h": 0.5
+      }
+    }
+  ],
+  "fixed_price_sequences": {
+    "increasing_trend": [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+    "decreasing_trend": [150, 140, 130, 120, 110, 100, 90, 80, 70, 60, 50],
+    "volatile": [50, 120, 80, 140, 60, 150, 70, 130, 90, 110, 100],
+    "stable_high": [140, 145, 142, 148, 143, 147, 144, 146, 145, 149, 148],
+    "stable_low": [55, 58, 52, 60, 54, 59, 56, 57, 58, 55, 60]
+  }
+}
