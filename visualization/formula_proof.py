@@ -82,4 +82,4 @@ def plot_formula_validation(results: Dict[str, AlgorithmResult], prices: list, c
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches='tight')
     plt.close()
-    print(f"✅ Saved: {save_path}")
+    print(f"Log: Saved: {save_path}")

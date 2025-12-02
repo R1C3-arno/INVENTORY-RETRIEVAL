@@ -107,4 +107,4 @@ def plot_detailed_analysis(results: Dict[str, AlgorithmResult], prices: list, sa
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches='tight')
     plt.close()
-    print(f"✅ Saved: {save_path}")
+    print(f"Log: Saved: {save_path}")

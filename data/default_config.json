@@ -8,7 +8,10 @@
     "b": 0.5,
     "delta": 0.2,
     "h": 2.0,
-    "num_scenarios": 100
+    "num_scenarios": 100,
+
+    "demand_dist": "uniform",
+    "sigma": 0.15
   },
   "output": {
     "directory": "output",

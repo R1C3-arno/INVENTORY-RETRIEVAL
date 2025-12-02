@@ -14,6 +14,9 @@ class Config:
     h: float
     num_scenarios: int
 
+    demand_dist: str = "uniform"  # "uniform" hoặc "truncnorm"
+    sigma: float = 0.15  # dùng cho truncnorm (paper experiments)
+
     @property
     def theta(self) -> float:
         return self.M / self.m

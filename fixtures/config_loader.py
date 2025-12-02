@@ -16,6 +16,9 @@ class SimulationConfig:
     h: float
     num_scenarios: int
 
+    demand_dist: str = "uniform"
+    sigma: float = 0.15
+
     @property
     def theta(self) -> float:
         import numpy as np
@@ -37,6 +40,11 @@ class ConfigLoader:
             data = json.load(f)
 
         sim_params = data["simulation"]
+
+        # Log: Fallback an toàn
+        sim_params.setdefault("demand_dist", "uniform")
+        sim_params.setdefault("sigma", 0.15)
+
         return SimulationConfig(**sim_params)
 
     def load_scenario(self, scenario_name: str) -> SimulationConfig:

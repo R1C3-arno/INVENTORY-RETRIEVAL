@@ -80,4 +80,4 @@ def plot_algorithm_comparison(batch_results: Dict[str, BatchResult], save_path: 
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches='tight')
     plt.close()
-    print(f"✅ Saved: {save_path}")
+    print(f"Log: Saved: {save_path}")

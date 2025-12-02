@@ -3,3 +3,6 @@ matplotlib
 pandas
 seaborn
 tqdm
+scipy
+colorama
+reportlab

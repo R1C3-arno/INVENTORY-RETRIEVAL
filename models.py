@@ -1,14 +1,16 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Dict
 
 
 @dataclass
 class AlgorithmResult:
-    name: str
-    total_revenue: float
-    retrievals: List[float]
-    revenues: List[float]
-    inventory: List[int]
+    def __init__(self, name, total_revenue, retrievals, revenues, inventory, period_logs=None):
+        self.name = name
+        self.total_revenue = total_revenue
+        self.retrievals = retrievals
+        self.revenues = revenues
+        self.inventory = inventory
+        self.period_logs = period_logs or []
 
     @property
     def avg_retrieval(self) -> float:

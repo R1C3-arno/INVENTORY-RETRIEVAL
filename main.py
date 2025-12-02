@@ -22,13 +22,19 @@ from visualization.formula_proof import plot_formula_validation
 from visualization.comparison import plot_algorithm_comparison
 from visualization.detailed_analysis import plot_detailed_analysis
 
+from terminal_to_pdf.export_pdf import export_results_to_pdf
+
+
 
 def main():
+
     parser = argparse.ArgumentParser(description="Inventory Retrieval Simulation")
     parser.add_argument("--config", type=str, default=None, help="Config file or scenario name")
     parser.add_argument("--prices", type=str, default=None, help="Fixed price sequence name")
     parser.add_argument("--list-scenarios", action="store_true", help="List available scenarios")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
+
+    parser.add_argument("--verbose", action="store_true", help="Print detailed period info")
 
     parser.add_argument("--Q", type=int, help="Override Q")
     parser.add_argument("--m", type=float, help="Override m")
@@ -67,7 +73,7 @@ def main():
     validator = DataValidator()
     validation = validator.validate_config(config)
     if not validation.is_valid:
-        print("❌ Configuration errors:")
+        print("Log: Configuration errors:")
         for error in validation.errors:
             print(f"  - {error}")
         return
@@ -83,7 +89,15 @@ def main():
     print(f"Scenarios: {config.num_scenarios}")
     print("=" * 60)
 
-    demand = DemandModel(config.a, config.b, config.delta)
+    demand = DemandModel(
+        config.a,
+        config.b,
+        config.delta,
+        distribution=getattr(config, "demand_dist", "uniform"),
+        sigma=getattr(config, "sigma", 0.15)
+    )
+
+    print(f"Log: DEMAND DISTRIBUTION MODE: {demand.distribution.upper()}")
 
     algorithms = [
         ALG_IR(config.Q, config.m, config.M, demand),
@@ -97,6 +111,23 @@ def main():
 
     runner = SimulationRunner(config)
 
+    if args.verbose:
+        print("\n" + "=" * 80)
+        print("Log: VERBOSE MODE ACTIVATED")
+        print("=" * 80)
+
+        verbose_results = {}
+
+        for alg in algorithms:
+            data = runner.run_verbose_single(alg)
+            verbose_results[alg.name()] = data
+
+        #  XUẤT PDF TỪ VERBOSE
+        export_results_to_pdf(verbose_results, f"{OUTPUT_DIR}/verbose_results.pdf")
+        print("Log: VERBOSE PDF EXPORTED")
+
+        return
+
     print("\n[1/3] Running single simulation...")
     if args.prices:
         print(f"Using fixed price sequence: {args.prices}")
@@ -107,6 +138,7 @@ def main():
             single_results[alg.name()] = result
     else:
         single_results, prices = runner.run_single(algorithms)
+        export_results_to_pdf(single_results, f"{OUTPUT_DIR}/results.pdf")
 
     print("\n[2/3] Running batch simulation...")
     batch_results = runner.run_batch(algorithms)

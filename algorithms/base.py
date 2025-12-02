@@ -12,19 +12,45 @@ import numpy as np
 from typing import List
 from models import AlgorithmResult
 
+from scipy.stats import truncnorm, uniform
+
 
 class DemandModel:
-    def __init__(self, a: float, b: float, delta: float):
+    def __init__(self, a, b, delta, distribution="uniform", sigma=0.15):
         self.a = a
         self.b = b
         self.delta = delta
+        self.distribution = distribution
+        self.sigma = sigma
+
+        # Support: [1-Δ, 1+Δ]
+        self.lower = 1 - delta
+        self.upper = 1 + delta
+
+        if distribution == "uniform":
+            self.dist = uniform(loc=self.lower, scale=2 * delta)
+            self.truncnorm = None
+
+        elif distribution == "truncnorm":
+            a_, b_ = (self.lower - 1) / sigma, (self.upper - 1) / sigma
+            self.truncnorm = truncnorm(a_, b_, loc=1, scale=sigma)
+            self.dist = None
+
+        else:
+            raise ValueError("distribution must be 'uniform' or 'truncnorm'")
 
     def expected(self, price: float) -> float:
         return max(0.0, self.a - self.b * price)
 
+    # ✅ HÀM DEMAND THỰC TẾ (uniform hoặc truncnorm)
     def actual(self, price: float) -> float:
         base = self.expected(price)
-        fluctuation = np.random.uniform(1 - self.delta, 1 + self.delta)
+
+        if self.distribution == "truncnorm":
+            fluctuation = self.truncnorm.rvs()
+        else:
+            fluctuation = self.dist.rvs()
+
         return base * fluctuation
 
 
@@ -52,26 +78,64 @@ class Algorithm(ABC):
         retrievals = []
         revenues = []
         inventory_levels = [self.Q]
+        period_logs = []  #
+        total_revenue = 0.0
+        total_holding_cost = 0.0
 
         for t, price in enumerate(prices, start=1):
+            inventory_before = inventory
+
+            # 1. Quyết định lấy bao nhiêu
             retrieval = self.decide(t, n, price, inventory, cumulative)
             retrieval = max(0.0, min(retrieval, inventory))
 
-            demand = self.demand.actual(price)
-            sales = min(retrieval, demand)
+            # 2. Demand
+            base_demand = self.demand.expected(price)
+
+            if self.demand.distribution == "truncnorm":
+                fluctuation = self.demand.truncnorm.rvs()
+            else:
+                fluctuation = self.demand.dist.rvs()
+
+            actual_demand = base_demand * fluctuation
+
+            # 3. Sales & revenue
+            sales = min(retrieval, actual_demand)
             revenue = price * sales
 
-            inventory -= retrieval
+            # 4. Holding cost
+            inventory_after = inventory - retrieval
+            holding_cost = inventory_after * 0.0  #  nếu chưa có h thì để 0, hoặc truyền h vào
+
+            # 5. Update trạng thái
+            inventory = inventory_after
             cumulative += retrieval
+            total_revenue += revenue
+            total_holding_cost += holding_cost
 
             retrievals.append(retrieval)
             revenues.append(revenue)
-            inventory_levels.append(int(inventory))
+            inventory_levels.append(inventory_after)
+
+            #  6. GHI LOG ĐẦY ĐỦ CHO PDF
+            period_logs.append({
+                "Period": t,
+                "Price": price,
+                "Inventory": inventory_before,
+                "Retrieval": retrieval,
+                "Delta": fluctuation,
+                "Demand": actual_demand,
+                "Sales": sales,
+                "Revenue": revenue,
+                "HoldingCost": holding_cost,
+                "Remaining": inventory_after
+            })
 
         return AlgorithmResult(
             name=self.name(),
-            total_revenue=sum(revenues),
+            total_revenue=total_revenue,
             retrievals=retrievals,
             revenues=revenues,
-            inventory=inventory_levels
+            inventory=inventory_levels,
+            period_logs=period_logs
         )
